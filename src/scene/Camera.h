@@ -6,7 +6,7 @@
 #define KORANTENG_CAMERA_H
 
 
-#include <glm/vec3.hpp>
+#include "glm/vec3.hpp"
 
 class Camera {
 public:
@@ -17,6 +17,8 @@ public:
     glm::vec3 canvasToViewport(float x, float y, float canvasWidth, float canvasHeight) const;
 
     glm::vec3 getPosition() const;
+
+    [[nodiscard]] float getDistance() const;
 
 private:
     glm::vec3 position;

@@ -23,3 +23,7 @@ glm::vec3 Camera::getPosition() const {
     return position;
 }
 
+float Camera::getDistance() const {
+    return distance;
+}
+

@@ -1,14 +1,34 @@
 #include <iostream>
-#include "Sphere.h"
-#include "Light.h"
-#include "Camera.h"
+#include "src/scene/Camera.h"
+#include "src/raytracer/Ray.h"
+#include "SFML/Graphics/Color.hpp"
+#include "src/objects/Sphere.h"
+#include "src/scene/Scene.h"
+#include "src/raytracer/RayTracer.h"
 
 int main() {
-
-    Sphere sphere(glm::vec3(0.f, -1.f, 3.f), 1.f, sf::Color(0, 255, 0));
-    //Light light(glm::vec3(20.f,20.f,25.f), sf::Color(255,255,255));
     Camera camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f),
                   glm::vec3(1.0f, 0.0f, 0.0f), 1.f, 1.f, 1.f);
+
+    Scene scene(std::make_unique<Camera>(camera));
+
+    Sphere sphere(glm::vec3(0.f, -1.f, 3.f), 1.f, sf::Color(255, 0, 0));
+    Sphere sphere2(glm::vec3(2.f, 0.f, 4.f), 1.f, sf::Color(0, 0, 255));
+    Sphere sphere3(glm::vec3(-2.f, 0.f, 4.f), 1.f, sf::Color(0, 255, 0));
+
+    scene.addObjects(std::make_unique<Sphere>(sphere));
+    scene.addObjects(std::make_unique<Sphere>(sphere2));
+    scene.addObjects(std::make_unique<Sphere>(sphere3));
+
+    RayTracer rayTracer;
+    auto image = rayTracer.render(scene, 1000, 1000);
+
+    image.saveToFile("../image.png");
+
+
+    /*Sphere sphere(glm::vec3(0.f, -1.f, 3.f), 1.f, sf::Color(0, 255, 0));
+    //Light light(glm::vec3(20.f,20.f,25.f), sf::Color(255,255,255));
+
 
     float canvasWidth = 1000.f;
     float canvasHeight = 1000.f;
@@ -29,7 +49,8 @@ int main() {
         }
     }
 
-    image.saveToFile("image.png");
+    image.flipVertically();
+    image.saveToFile("../image.png");*/
 
 
     return 0;

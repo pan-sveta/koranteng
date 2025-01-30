@@ -4,14 +4,19 @@ project(koranteng)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(koranteng main.cpp
-        Sphere.cpp
-        Sphere.h
-        Light.cpp
-        Light.h
-        Camera.cpp
-        Camera.h
-        Ray.cpp
-        Ray.h)
+        src/objects/Sphere.cpp
+        src/objects/Sphere.h
+        src/objects/Light.cpp
+        src/objects/Light.h
+        src/scene/Camera.cpp
+        src/scene/Camera.h
+        src/raytracer/Ray.cpp
+        src/raytracer/Ray.h
+        src/scene/Scene.cpp
+        src/scene/Scene.h
+        src/objects/Object.h
+        src/raytracer/RayTracer.cpp
+        src/raytracer/RayTracer.h)
 
 find_package(SFML COMPONENTS system window graphics audio CONFIG REQUIRED)
 target_link_libraries(koranteng PRIVATE sfml-system sfml-network sfml-graphics sfml-window sfml-audio)
