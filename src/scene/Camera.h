@@ -14,7 +14,7 @@ public:
            float distance, float viewportWidth, float viewportHeight);
 
     //Canvas to Viewport Transformation
-    glm::vec3 canvasToViewport(float x, float y, float canvasWidth, float canvasHeight) const;
+    glm::vec3 canvasToViewport(int x, int y, int canvasWidth, int canvasHeight) const;
 
     glm::vec3 getPosition() const;
 

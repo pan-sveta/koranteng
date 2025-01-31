@@ -7,7 +7,7 @@
 #include "glm/geometric.hpp"
 
 
-std::tuple<float, float> Sphere::interection(const Ray &ray) const {
+std::tuple<float, float> Sphere::intersection(const Ray &ray) const {
     glm::vec3 oc = ray.O - position;
     float a = glm::dot(ray.D, ray.D);
     float b = 2.0f * glm::dot(oc, ray.D);

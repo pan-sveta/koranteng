@@ -13,7 +13,7 @@ public:
 
     Sphere(glm::vec3 position, float radius, sf::Color color);
 
-    std::tuple<float, float> interection(const Ray &ray) const override;
+    std::tuple<float, float> intersection(const Ray &ray) const override;
 
 private:
     float radius;

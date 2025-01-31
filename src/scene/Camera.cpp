@@ -10,7 +10,7 @@ Camera::Camera(const glm::vec3 &position, const glm::vec3 &direction, const glm:
                                                                             viewportWidth(viewportWidth),
                                                                             viewportHeight(viewportHeight) {}
 
-glm::vec3 Camera::canvasToViewport(float x, float y, float canvasWidth, float canvasHeight) const {
+glm::vec3 Camera::canvasToViewport(int x, int y, int canvasWidth, int canvasHeight) const {
     float scaleX = viewportWidth / canvasWidth;
     float scaleY = viewportHeight / canvasHeight;
 

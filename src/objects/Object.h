@@ -13,7 +13,7 @@ class Object {
 public:
     Object(const glm::vec3 &position, const sf::Color &color) : position(position), color(color) {}
 
-    virtual std::tuple<float, float> interection(const Ray &ray) const = 0;
+    virtual std::tuple<float, float> intersection(const Ray &ray) const = 0;
 
     glm::vec3 getPosition() const {
         return position;

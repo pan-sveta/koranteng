@@ -41,7 +41,7 @@ int main() {
         for (auto y = -canvasHeight / 2; y <= canvasHeight / 2; y++) {
             glm::vec3 viewportPoint = camera.canvasToViewport(x, y, canvasWidth, canvasHeight);
             Ray ray(camera.getPosition(), glm::normalize(viewportPoint - camera.getPosition()));
-            auto color = sphere.interection(ray);
+            auto color = sphere.intersection(ray);
 
 
             image.setPixel(x + canvasWidth / 2, y + canvasHeight / 2, color);

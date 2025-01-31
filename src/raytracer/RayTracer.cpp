@@ -21,7 +21,7 @@ sf::Image RayTracer::render(const Scene &scene, int width, int height) {
             float closestT = std::numeric_limits<float>::max();
 
             for (const auto& obj : scene.getObjects()) {
-                auto [t0, t1] = obj->interection(ray);
+                auto [t0, t1] = obj->intersection(ray);
                 if (t0 > minT && t0 < maxT && t0 < closestT) {
                     closestT = t0;
                     closestObject = obj.get();
