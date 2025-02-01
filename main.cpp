@@ -29,6 +29,14 @@ int main() {
     scene.addObjects(std::make_unique<Sphere>(sphere2));
     scene.addObjects(std::make_unique<Sphere>(sphere3));
 
+    Material lightMaterial;
+    lightMaterial.colour = sf::Color::White;
+    lightMaterial.emissionColour = sf::Color::White;
+    lightMaterial.emissionStrength = 4.f;
+
+    Sphere lightSphere(glm::vec3(0.f, 0.f, 6.f), 1.f, lightMaterial);
+    scene.addObjects(std::make_unique<Sphere>(lightSphere));
+
     RayTracer rayTracer;
     auto image = rayTracer.render(scene, 1000, 1000);
 

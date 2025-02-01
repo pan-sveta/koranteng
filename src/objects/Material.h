@@ -10,7 +10,7 @@ struct Material {
   sf::Color colour;
   sf::Color emissionColour;
   sf::Color specularColour;
-  sf::Color emissionStrength;
+  float emissionStrength;
   float smoothness{};
   float specularProbability{};
 };
