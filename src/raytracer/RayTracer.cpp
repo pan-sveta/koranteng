@@ -18,18 +18,18 @@ sf::Image RayTracer::render(const Scene &scene, int width, int height) {
             Ray ray(scene.getCamera()->getPosition(), glm::normalize(viewportPoint - scene.getCamera()->getPosition()));
 
             const Object* closestObject = nullptr;
-            float closestT = std::numeric_limits<float>::max();
+            HitInfo closestHitInfo(false,FLT_MAX,glm::vec3(0,0,0),glm::vec3(0,0,0));
 
             for (const auto& obj : scene.getObjects()) {
-                auto [t0, t1] = obj->intersection(ray);
-                if (t0 > minT && t0 < maxT && t0 < closestT) {
-                    closestT = t0;
+                auto hitInfo = obj->intersection(ray);
+                if (hitInfo.isHit && hitInfo.distance < closestHitInfo.distance) {
+                    closestHitInfo = hitInfo;
                     closestObject = obj.get();
                 }
             }
 
             if (closestObject != nullptr) {
-                image.setPixel(x + width / 2, y + height / 2, closestObject->getColor());
+                image.setPixel(x + width / 2, y + height / 2, closestObject->material.colour);
             }
 
         }

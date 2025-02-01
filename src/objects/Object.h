@@ -5,27 +5,27 @@
 #define KORANTENG_OBJECT_H
 
 #include <tuple>
+
+#include "Material.h"
+#include "../raytracer/HitInfo.h"
 #include "glm/vec3.hpp"
 #include "SFML/Graphics/Color.hpp"
 #include "../raytracer/Ray.h"
 
 class Object {
 public:
-    Object(const glm::vec3 &position, const sf::Color &color) : position(position), color(color) {}
+    Object(const glm::vec3 &position, Material material) : position(position), material(material) {}
 
-    virtual std::tuple<float, float> intersection(const Ray &ray) const = 0;
+    virtual HitInfo intersection(const Ray &ray) const = 0;
 
     glm::vec3 getPosition() const {
         return position;
     }
 
-    sf::Color getColor() const {
-        return color;
-    }
+    Material material;
 
 protected:
     glm::vec3 position;
-    sf::Color color;
 };
 
 

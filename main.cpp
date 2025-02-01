@@ -12,9 +12,18 @@ int main() {
 
     Scene scene(std::make_unique<Camera>(camera));
 
-    Sphere sphere(glm::vec3(0.f, -1.f, 3.f), 1.f, sf::Color(255, 0, 0));
-    Sphere sphere2(glm::vec3(2.f, 0.f, 4.f), 1.f, sf::Color(0, 0, 255));
-    Sphere sphere3(glm::vec3(-2.f, 0.f, 4.f), 1.f, sf::Color(0, 255, 0));
+    Material redMaterial;
+    redMaterial.colour = sf::Color::Red;
+
+    Material greenMaterial;
+    greenMaterial.colour = sf::Color::Green;
+
+    Material blueMaterial;
+    blueMaterial.colour = sf::Color::Blue;
+
+    Sphere sphere(glm::vec3(0.f, -1.f, 3.f), 1.f, redMaterial);
+    Sphere sphere2(glm::vec3(2.f, 0.f, 4.f), 1.f, blueMaterial);
+    Sphere sphere3(glm::vec3(-2.f, 0.f, 4.f), 1.f, greenMaterial);
 
     scene.addObjects(std::make_unique<Sphere>(sphere));
     scene.addObjects(std::make_unique<Sphere>(sphere2));
