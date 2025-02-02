@@ -8,7 +8,7 @@
 
 
 HitInfo Sphere::intersection(const Ray &ray) const {
-    HitInfo hitInfo(false,0.F,glm::vec3(0,0,0), glm::vec3(0,0,0));
+    HitInfo hitInfo(false,0.F,glm::vec3(0,0,0), glm::vec3(0,0,0), this->material);
 
     glm::vec3 oc = ray.O - position;
     float a = glm::dot(ray.D, ray.D);

@@ -12,6 +12,7 @@ struct HitInfo
     float distance;
     glm::vec3 hitpoint;
     glm::vec3 normal;
+    Material material;
 };
 
 #endif //HITINFO_H

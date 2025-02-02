@@ -13,13 +13,17 @@ int main() {
     Scene scene(std::make_unique<Camera>(camera));
 
     Material redMaterial;
-    redMaterial.colour = sf::Color::Red;
+    redMaterial.colour = glm::vec3(255,0,0);
+    redMaterial.specularColour = glm::vec3(255,0,0);
+
 
     Material greenMaterial;
-    greenMaterial.colour = sf::Color::Green;
+    greenMaterial.colour = glm::vec3(0,255,0);
+    greenMaterial.specularColour = glm::vec3(0,255,0);
 
     Material blueMaterial;
-    blueMaterial.colour = sf::Color::Blue;
+    blueMaterial.colour = glm::vec3(0,0,255);
+    blueMaterial.specularColour = glm::vec3(0,0,255);
 
     Sphere sphere(glm::vec3(0.f, -1.f, 3.f), 1.f, redMaterial);
     Sphere sphere2(glm::vec3(2.f, 0.f, 4.f), 1.f, blueMaterial);
@@ -30,11 +34,11 @@ int main() {
     scene.addObjects(std::make_unique<Sphere>(sphere3));
 
     Material lightMaterial;
-    lightMaterial.colour = sf::Color::White;
-    lightMaterial.emissionColour = sf::Color::White;
+    lightMaterial.colour = glm::vec3(255,255,255);
+    lightMaterial.emissionColour = glm::vec3(255,255,255);
     lightMaterial.emissionStrength = 4.f;
 
-    Sphere lightSphere(glm::vec3(0.f, 0.f, 6.f), 1.f, lightMaterial);
+    Sphere lightSphere(glm::vec3(0.f, 0.f, -4.f), 1.f, lightMaterial);
     scene.addObjects(std::make_unique<Sphere>(lightSphere));
 
     RayTracer rayTracer;
