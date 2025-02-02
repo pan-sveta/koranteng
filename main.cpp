@@ -38,7 +38,7 @@ int main() {
     lightMaterial.emissionColour = glm::vec3(255,255,255);
     lightMaterial.emissionStrength = 4.f;
 
-    Sphere lightSphere(glm::vec3(0.f, 0.f, -4.f), 1.f, lightMaterial);
+    Sphere lightSphere(glm::vec3(0.f, -3.f, 8.f), 1.f, lightMaterial);
     scene.addObjects(std::make_unique<Sphere>(lightSphere));
 
     RayTracer rayTracer;

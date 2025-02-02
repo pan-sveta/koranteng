@@ -6,18 +6,16 @@
 
 #include <iostream>
 #include <ostream>
+#include <random>
 
 #include "glm/glm.hpp"
 
-HitInfo RayTracer::calculateRayColission(Ray ray, const Scene& scene)
-{
-    HitInfo closestHitInfo(false,FLT_MAX);
+HitInfo RayTracer::calculateRayColission(Ray ray, const Scene &scene) {
+    HitInfo closestHitInfo(false, FLT_MAX);
 
-    for (const auto& obj : scene.getObjects())
-    {
+    for (const auto &obj: scene.getObjects()) {
         auto hitInfo = obj->intersection(ray);
-        if (hitInfo.isHit && hitInfo.distance < closestHitInfo.distance)
-        {
+        if (hitInfo.isHit && hitInfo.distance < closestHitInfo.distance) {
             closestHitInfo = hitInfo;
         }
     }
@@ -25,17 +23,15 @@ HitInfo RayTracer::calculateRayColission(Ray ray, const Scene& scene)
     return closestHitInfo;
 }
 
-float RandomValueNormalDistribution()
-{
+float RayTracer::RandomValueNormalDistribution() {
     // Thanks to https://stackoverflow.com/a/6178290
-    float theta = 2 * 3.1415926 * (rand()/RAND_MAX);
-    float rho = sqrt(-2 * log(rand()/RAND_MAX));
+    float theta = 2 * 3.1415926 * RandomValue();
+    float rho = sqrt(-2 * log(RandomValue()));
     return rho * cos(theta);
 }
 
 // Calculate a random direction
-glm::vec3 RandomDirection()
-{
+glm::vec3 RayTracer::RandomDirection() {
     // Thanks to https://math.stackexchange.com/a/1585996
     float x = RandomValueNormalDistribution();
     float y = RandomValueNormalDistribution();
@@ -43,28 +39,29 @@ glm::vec3 RandomDirection()
     return glm::normalize(glm::vec3(x, y, z));
 }
 
-glm::vec3 lerp(const glm::vec3& start, const glm::vec3& end, float t) {
+glm::vec3 lerp(const glm::vec3 &start, const glm::vec3 &end, float t) {
     return start + t * (end - start);  // Perform linear interpolation
 }
 
-glm::vec3 RayTracer::trace(Ray ray, const Scene& scene)
-{
-    glm::vec3 incomingLight(0,0,0);
-    glm::vec3 rayColour(0,0,0);
+float RayTracer::RandomValue() {
+    return dist(gen);
+}
 
-    const int MaxBounceCount = 7;
+glm::vec3 RayTracer::trace(Ray ray, const Scene &scene) {
+    glm::vec3 incomingLight(0, 0, 0);
+    glm::vec3 rayColour(1, 1, 1);
 
-    for (int bounceIndex = 0; bounceIndex <= MaxBounceCount; bounceIndex ++)
-    {
-        HitInfo hitInfo = calculateRayColission(ray,scene);
+    const int MaxBounceCount = 30;
 
-        if (hitInfo.isHit)
-        {
+    for (int bounceIndex = 0; bounceIndex <= MaxBounceCount; bounceIndex++) {
+        HitInfo hitInfo = calculateRayColission(ray, scene);
+
+        if (hitInfo.isHit) {
             Material material = hitInfo.material;
 
             // Figure out new ray position and direction
-            //bool isSpecularBounce = material.specularProbability >= (rand() / RAND_MAX);
-            bool isSpecularBounce = false;
+            bool isSpecularBounce = material.specularProbability >= RandomValue();
+
 
             ray.O = hitInfo.hitpoint;
             glm::vec3 diffuseDir = glm::normalize(hitInfo.normal + RandomDirection());
@@ -78,7 +75,7 @@ glm::vec3 RayTracer::trace(Ray ray, const Scene& scene)
 
             // Random early exit if ray colour is nearly 0 (can't contribute much to final result)
             float p = std::max(rayColour.r, std::max(rayColour.g, rayColour.b));
-            if ((rand()/RAND_MAX) >= p) {
+            if (RandomValue() >= p) {
                 break;
             }
             rayColour *= 1.0f / p;
@@ -93,28 +90,25 @@ glm::vec3 RayTracer::trace(Ray ray, const Scene& scene)
     return incomingLight;
 }
 
-sf::Image RayTracer::render(const Scene& scene, int width, int height)
-{
+sf::Image RayTracer::render(const Scene &scene, int width, int height) {
     sf::Image image;
     image.create(width + 1, height + 1, sf::Color(255, 255, 255));
 
 
-    for (auto x = -width / 2; x <= width / 2; x++)
-    {
-        for (auto y = -height / 2; y <= height / 2; y++)
-        {
+    for (auto x = -width / 2; x <= width / 2; x++) {
+        for (auto y = -height / 2; y <= height / 2; y++) {
             glm::vec3 viewportPoint = scene.getCamera()->canvasToViewport(x, y, width, height);
 
             constexpr int raysPerPixel = 7;
             glm::vec3 totalIncomingLight(0, 0, 0);
 
-            for (int rayIndex = 0; rayIndex < raysPerPixel; rayIndex++)
-            {
+            for (int rayIndex = 0; rayIndex < raysPerPixel; rayIndex++) {
                 Ray ray(scene.getCamera()->getPosition(),
                         glm::normalize(viewportPoint - scene.getCamera()->getPosition()));
 
                 totalIncomingLight += trace(ray, scene);
-                std::cout << "Total Light r: " << totalIncomingLight.r << "g: " << totalIncomingLight.g << "b: " << totalIncomingLight.b << std::endl;
+                /*std::cout << "Total Light r: " << totalIncomingLight.r << "g: " << totalIncomingLight.g << "b: "
+                          << totalIncomingLight.b << std::endl;*/
             }
 
             sf::Color pixelColor(totalIncomingLight.r / raysPerPixel, totalIncomingLight.g / raysPerPixel,
@@ -127,4 +121,10 @@ sf::Image RayTracer::render(const Scene& scene, int width, int height)
 
     image.flipVertically();
     return image;
+}
+
+RayTracer::RayTracer() {
+    std::random_device rd;
+    gen = std::mt19937(rd());
+    dist = std::uniform_real_distribution<float>(0, 1);
 }
