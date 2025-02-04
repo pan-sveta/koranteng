@@ -9,6 +9,8 @@
 #include <random>
 
 #include "glm/glm.hpp"
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 
 HitInfo RayTracer::calculateRayColission(Ray ray, const Scene &scene) {
     HitInfo closestHitInfo(false, FLT_MAX);
@@ -47,6 +49,8 @@ float RayTracer::RandomValue() {
     return dist(gen);
 }
 
+
+
 glm::vec3 RayTracer::trace(Ray ray, const Scene &scene) {
     glm::vec3 incomingLight(0, 0, 0);
     glm::vec3 rayColour(1, 1, 1);
@@ -80,9 +84,9 @@ glm::vec3 RayTracer::trace(Ray ray, const Scene &scene) {
             }
             rayColour *= 1.0f / p;
         }
-        /*else
+/*        else
         {
-            incomingLight += GetEnvironmentLight(ray) * rayColour;
+            incomingLight += glm::vec3 (255,255,255) * rayColour;
             break;
         }*/
     }
@@ -99,7 +103,7 @@ sf::Image RayTracer::render(const Scene &scene, int width, int height) {
         for (auto y = -height / 2; y <= height / 2; y++) {
             glm::vec3 viewportPoint = scene.getCamera()->canvasToViewport(x, y, width, height);
 
-            constexpr int raysPerPixel = 7;
+            constexpr int raysPerPixel = 100;
             glm::vec3 totalIncomingLight(0, 0, 0);
 
             for (int rayIndex = 0; rayIndex < raysPerPixel; rayIndex++) {
@@ -107,8 +111,6 @@ sf::Image RayTracer::render(const Scene &scene, int width, int height) {
                         glm::normalize(viewportPoint - scene.getCamera()->getPosition()));
 
                 totalIncomingLight += trace(ray, scene);
-                /*std::cout << "Total Light r: " << totalIncomingLight.r << "g: " << totalIncomingLight.g << "b: "
-                          << totalIncomingLight.b << std::endl;*/
             }
 
             sf::Color pixelColor(totalIncomingLight.r / raysPerPixel, totalIncomingLight.g / raysPerPixel,
@@ -118,8 +120,9 @@ sf::Image RayTracer::render(const Scene &scene, int width, int height) {
             image.setPixel(x + width / 2, y + height / 2, pixelColor);
         }
     }
-
     image.flipVertically();
+
+
     return image;
 }
 

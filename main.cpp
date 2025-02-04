@@ -12,6 +12,9 @@ int main() {
 
     Scene scene(std::make_unique<Camera>(camera));
 
+
+
+
     Material redMaterial;
     redMaterial.colour = glm::vec3(255,0,0);
     redMaterial.specularColour = glm::vec3(255,0,0);
@@ -38,11 +41,11 @@ int main() {
     lightMaterial.emissionColour = glm::vec3(255,255,255);
     lightMaterial.emissionStrength = 4.f;
 
-    Sphere lightSphere(glm::vec3(0.f, -3.f, 8.f), 1.f, lightMaterial);
+    Sphere lightSphere(glm::vec3(0.f, 3.f, 2.f), 1.f, lightMaterial);
     scene.addObjects(std::make_unique<Sphere>(lightSphere));
 
     RayTracer rayTracer;
-    auto image = rayTracer.render(scene, 1000, 1000);
+    auto image = rayTracer.render(scene, 500, 500);
 
     image.saveToFile("../image.png");
 
